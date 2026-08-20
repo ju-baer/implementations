@@ -38,6 +38,13 @@ this key and what it should say; `beta_t` controls how much of that
 difference to correct on this step, a learning-rate-like quantity, not a
 decay.
 
+<p align="center">
+  <img src="deltanet.png" alt="DeltaNet Neural Architecture" width="900">
+  <br>
+  <em>DeltaNet Neural Architecture</em>
+</p>
+
+
 ## 2. How this relates to KDA
 
 KDA (`../kda`) takes exactly this delta-rule update and adds a channel-wise
