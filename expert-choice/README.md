@@ -1,8 +1,8 @@
 # Expert Choice Routing - a toy-scale build
 
 A minimal implementation of **Expert Choice routing**, from Zhou, Lei, Liu,
-Du, Huang, Zhao, Dai, Chen, Le, Laudon, *"Mixture-of-Experts with Expert
-Choice Routing"* (2022) — a way to route tokens to experts that guarantees
+Du, Huang, Zhao, Dai, Chen, Le, Laudon, *"[Mixture-of-Experts with Expert
+Choice Routing](https://arxiv.org/abs/2202.09368)"* (2022). It is a way to route tokens to experts that guarantees
 perfectly even expert load *by construction*, instead of relying on an
 auxiliary loss to encourage it.
 
@@ -19,7 +19,7 @@ inverts.)*
 The `../moe` folder in this repo implements the standard MoE routing
 recipe: every **token** looks at all the experts and picks its favorite
 top-k. This works, but nothing about it guarantees experts end up with
-balanced workloads — some experts can end up popular and overloaded, others
+balanced workloads. Some experts can end up popular and overloaded, others
 neglected, which is why that notebook needs an auxiliary load-balancing
 loss to actively discourage the router from collapsing onto a few experts.
 
@@ -33,8 +33,8 @@ for each expert e:
     process exactly those tokens, weighted by their affinity score
 ```
 
-Since every expert always picks exactly `capacity` tokens — no more, no
-less — **every expert is guaranteed to process the same number of tokens**,
+Since every expert always picks exactly `capacity` tokens (no more, no
+less) **every expert is guaranteed to process the same number of tokens**,
 by construction. There's no possibility of load imbalance for an auxiliary
 loss to fix, because the mechanism itself can't produce imbalance in the
 first place.
@@ -60,7 +60,7 @@ headroom.
 
 There's a real trade-off buried in this design: because experts pick
 tokens (not the other way around), a token can now be picked by **several**
-experts, or by **none at all** — nothing guarantees every token gets
+experts, or by **none at all**, nothing guarantees every token gets
 processed. In a full model, this token-level unevenness is usually fine,
 since the surrounding residual connection means an un-routed token simply
 skips the MoE layer's contribution for that step, rather than being
@@ -71,7 +71,7 @@ dropped from the sequence outright.
 The paper's routing uses a slightly more involved auxiliary procedure for
 very small `capacity_factor` settings (to keep training stable when
 capacity is tight), and discusses batch-composition effects at inference
-time — since "top-c tokens out of this expert's column of scores" depends
+time, since "top-c tokens out of this expert's column of scores" depends
 on which other tokens happen to be in the same batch, a wrinkle
 token-choice routing doesn't have, since each token's routing decision
 there doesn't depend on any other token in the batch. This notebook
@@ -83,10 +83,10 @@ implements the core selection mechanism directly, with a generous
 Open `expert_choice_mini.ipynb` in Colab, run all cells top to bottom. The
 notebook first checks the balance guarantee directly (every expert handling
 exactly `capacity` tokens), then trains a tiny LM for 300 steps on a
-repeating `"0123456789ABCDEF"` string, then generates — no auxiliary loss
+repeating `"0123456789ABCDEF"` string, then generates no auxiliary loss
 term anywhere in the training loop.
 
 ## 6. Reference
 
 Zhou, Lei, Liu, Du, Huang, Zhao, Dai, Chen, Le, Laudon,
-*"Mixture-of-Experts with Expert Choice Routing,"* 2022.
+*"[Mixture-of-Experts with Expert Choice Routing](https://arxiv.org/abs/2202.09368),"* 2022.
