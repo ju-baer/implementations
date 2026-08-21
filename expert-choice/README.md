@@ -39,6 +39,12 @@ by construction. There's no possibility of load imbalance for an auxiliary
 loss to fix, because the mechanism itself can't produce imbalance in the
 first place.
 
+<p align="center">
+  <img src="expert-choice.png" alt="High-level Comparison Between Conventional MoE and expert choice MoE" width="900">
+  <br>
+  <em>High-level Comparison Between Conventional MoE and expert choice MoE</em>
+</p>
+
 ## 2. What "capacity" means here
 
 `capacity` is simply how many tokens each expert is allowed to pick,
