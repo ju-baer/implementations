@@ -1,8 +1,8 @@
-# Gated Linear Attention (GLA) — a toy-scale build
+# Gated Linear Attention (GLA) - a toy-scale build
 
 A minimal implementation of **Gated Linear Attention**, from Yang et al.,
-*"Gated Linear Attention Transformers with Hardware-Efficient Training"*
-(2023) — the direct architectural ancestor of KDA (see `../kda`), stripped
+*"[Gated Linear Attention Transformers with Hardware-Efficient Training](https://arxiv.org/abs/2312.06635)"*
+(2023), the direct architectural ancestor of KDA (see `../kda`), stripped
 to its simplest form: a linear-attention layer with a per-channel forget
 gate and nothing else.
 
@@ -15,11 +15,11 @@ trains it on a toy dataset, and verifies it learns.
 
 GLA is a **linear attention** layer. Instead of storing every past token and
 attending over all of them (which is what makes normal attention's memory
-grow with sequence length), it keeps a fixed-size running **state** — a
-small matrix — and updates it one token at a time.
+grow with sequence length), it keeps a fixed-size running **state** ,a
+small matrix and updates it one token at a time.
 
 Plain linear attention has one problem: it only ever *adds* new information
-to the state, so old information never fades — the state just gets muddier
+to the state, so old information never fades, the state just gets muddier
 the longer the sequence runs. GLA's fix is a **per-channel forget gate**:
 before writing anything new in, the state is first multiplied by a decay
 value between 0 and 1, so old information fades unless the model chooses to
@@ -50,7 +50,7 @@ on a matrix state" idea in isolation, before KDA layers more on top of it.
 The real implementation computes this recurrence with a
 **chunkwise-parallel** algorithm for GPU efficiency (the paper's whole
 "hardware-efficient training" contribution). This notebook uses the plain
-sequential recurrence instead — a Python `for` loop over timesteps. Same
+sequential recurrence instead, a Python `for` loop over timesteps. Same
 math, much slower, much easier to read.
 
 ## 4. Running it
@@ -62,5 +62,5 @@ model should generate visibly periodic output.
 
 ## 5. Reference
 
-Yang, Wang, Shen, Panda, Kim, *"Gated Linear Attention Transformers with
-Hardware-Efficient Training,"* 2023.
+Yang, Wang, Shen, Panda, Kim, *"[Gated Linear Attention Transformers with
+Hardware-Efficient Training](https://arxiv.org/abs/2312.06635),"* 2023.
