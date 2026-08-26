@@ -1,8 +1,8 @@
 # Grouped-Query Attention (GQA) - a toy-scale build
 
 A minimal implementation of **Grouped-Query Attention**, from Ainslie,
-Lee-Thorp, de Jong, Zemlyanskiy, Lebrón, Sanghai, *"GQA: Training
-Generalized Multi-Query Transformer Models from Multi-Head Checkpoints"*
+Lee-Thorp, de Jong, Zemlyanskiy, Lebrón, Sanghai, *"[GQA: Training
+Generalized Multi-Query Transformer Models from Multi-Head Checkpoints](https://arxiv.org/abs/2305.13245)"*
 (2023) — the simple, widely-deployed alternative to MLA (`../mla`) for
 shrinking the KV cache.
 
@@ -13,8 +13,8 @@ trains it on a toy dataset, and verifies it learns.
 
 ## 1. The problem, again
 
-Same motivation as MLA (`../mla`): the KV cache — everything a transformer
-stores between tokens during generation — grows with `n_heads * d_head` per
+Same motivation as MLA (`../mla`): the KV cache (everything a transformer
+stores between tokens during generation) grows with `n_heads * d_head` per
 token, and can dominate the memory cost of serving a model. MLA solves this
 by compressing all heads' K/V into one small shared latent vector. GQA
 takes a much simpler route.
@@ -22,10 +22,10 @@ takes a much simpler route.
 ## 2. The idea: fewer key/value heads than query heads
 
 Ordinary **multi-head attention (MHA)** gives every query head its own
-private key head and value head — `n_heads` of each. **Multi-query
+private key head and value head, `n_heads` of each. **Multi-query
 attention (MQA)**, an earlier and more aggressive idea, goes to the other
 extreme: every query head shares the *exact same single* key head and
-value head. MQA shrinks the cache a lot, but can hurt quality — one shared
+value head. MQA shrinks the cache a lot, but can hurt quality, one shared
 K/V pair has to serve every query head's needs at once.
 
 **GQA sits in between.** Split the query heads into a small number of
@@ -64,7 +64,7 @@ few lines of code; MLA needs a whole compression + decoupled-RoPE scheme.
 
 ## 4. What this notebook simplifies
 
-Not much — GQA is already about as simple as MHA itself. The one thing to
+Not much. GQA is already about as simple as MHA itself. The one thing to
 notice in the code is `repeat_interleave`, which is what actually
 implements "every head in a group shares the same K/V head," by
 duplicating each KV head across its group before the attention computation.
@@ -78,6 +78,6 @@ trains a tiny LM with real GQA (`n_kv_heads=2` out of 4 query heads) for
 
 ## 6. Reference
 
-Ainslie, Lee-Thorp, de Jong, Zemlyanskiy, Lebrón, Sanghai, *"GQA: Training
-Generalized Multi-Query Transformer Models from Multi-Head Checkpoints,"*
+Ainslie, Lee-Thorp, de Jong, Zemlyanskiy, Lebrón, Sanghai, *"[GQA: Training
+Generalized Multi-Query Transformer Models from Multi-Head Checkpoints](https://arxiv.org/abs/2305.13245),"*
 2023.
