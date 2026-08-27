@@ -80,6 +80,12 @@ Mixing the two gives a model that's cheap like a recurrent model over long
 context, while still getting precise short-range recall where it matters
 most.
 
+<p align="center">
+  <img src="griffin.png" alt="Griffin Architecture Diagram" width="900">
+  <br>
+  <em>The Main Backbone of the Architecture Overview</em>
+</p>
+
 ## 3. What this notebook simplifies
 
 The paper introduces custom, hardware-aware kernels for the RG-LRU
