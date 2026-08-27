@@ -1,13 +1,13 @@
-# Griffin & Hawk — a toy-scale build of a real-gated recurrence + local attention hybrid
+# Griffin & Hawk - a toy-scale build of a real-gated recurrence + local attention hybrid
 
 A minimal implementation of the **RG-LRU** (Real-Gated Linear Recurrent
 Unit) and the **Griffin** architecture, from De, Smith, Fernando, et al.
-(Google DeepMind), *"Griffin: Mixing Gated Linear Recurrences with Local
-Attention for Efficient Language Models"* (2024).
+(Google DeepMind), *"[Griffin: Mixing Gated Linear Recurrences with Local
+Attention for Efficient Language Models](https://arxiv.org/abs/2402.19427)"* (2024).
 
 This is the first **hybrid** architecture in this repo: every other
 recurrent-state notebook (KDA, GLA, RetNet, DeltaNet, Mamba, xLSTM)
-replaces attention entirely. Griffin doesn't — it interleaves a gated
+replaces attention entirely. Griffin doesn't; it interleaves a gated
 recurrence with occasional *local* (sliding-window) attention layers, on
 the view that recurrence is good at compressing long-range history and
 attention is good at precise short-range recall, and a model might as well
@@ -21,7 +21,7 @@ it, trains it on a toy dataset, and verifies it learns.
 ## 1. The RG-LRU: a *vector*-state recurrence
 
 Every other gated recurrent layer in this repo (KDA, GLA, RetNet, DeltaNet,
-xLSTM) keeps a **matrix** state — built from an outer product of a key and
+xLSTM) keeps a **matrix** state, built from an outer product of a key and
 a value, so it can associate specific keys with specific values, the way
 attention does. The RG-LRU takes a simpler approach: its state is just a
 **vector**, one number per channel, with no keys or values involved at all.
@@ -30,9 +30,9 @@ attention.
 
 At every timestep, two gates are computed from the input:
 
-- `r_t` (the **recurrence gate**) — controls how much this channel's decay
+- `r_t` (the **recurrence gate**) - controls how much this channel's decay
   rate should shift, per token.
-- `i_t` (the **input gate**) — controls how much of the new input actually
+- `i_t` (the **input gate**) - controls how much of the new input actually
   gets let in, independent of the recurrence gate.
 
 These combine with a fixed, learned per-channel base decay `a` (in `(0,1)`)
@@ -58,9 +58,9 @@ SiLU-activated version of the other branch, project back down.
 
 ## 2. Griffin: interleaving RG-LRU with local attention
 
-**Hawk** is the model you get from stacking Hawk blocks alone — no
+**Hawk** is the model you get from stacking Hawk blocks alone; no
 attention anywhere. **Griffin** takes the same Hawk blocks and periodically
-swaps some of them out for a **local (sliding-window) attention** block —
+swaps some of them out for a **local (sliding-window) attention** block,
 ordinary causal softmax attention, capped to only look back a fixed number
 of tokens. The paper uses a repeating pattern of mostly-recurrent blocks
 with attention mixed in periodically (this notebook uses 2 Hawk blocks for
@@ -86,7 +86,7 @@ The paper introduces custom, hardware-aware kernels for the RG-LRU
 recurrence (a real-valued analogue of the complex-valued linear recurrent
 unit from the earlier "LRU" paper, designed to run efficiently as an
 associative scan on a TPU/GPU). This notebook uses the plain sequential
-recurrence instead — a Python loop over timesteps — same as every other
+recurrence instead, a Python loop over timesteps — same as every other
 recurrent layer in this repo.
 
 ## 4. Running it
@@ -102,5 +102,5 @@ built, sanity-checked, trained for 300 steps on a repeating
 
 De, Smith, Fernando, Botev, Cristian-Muraru, Gu, Haroun, Berrada, Chen,
 Srinivasan, Desjardins, Doucet, Budden, Teh, Pascanu, De Freitas, Gulcehre,
-*"Griffin: Mixing Gated Linear Recurrences with Local Attention for
-Efficient Language Models,"* 2024.
+*"[Griffin: Mixing Gated Linear Recurrences with Local Attention for
+Efficient Language Models](https://arxiv.org/abs/2402.19427),"* 2024.
