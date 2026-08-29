@@ -1,8 +1,8 @@
 # Linear Attention - a toy-scale build of the ungated original
 
 A minimal implementation of **Linear Attention**, from Katharopoulos, Vyas,
-Pappas, Fleuret, *"Transformers are RNNs: Fast Autoregressive Transformers
-with Linear Attention"* (2020) — the true root of the entire
+Pappas, Fleuret, *"[Transformers are RNNs: Fast Autoregressive Transformers
+with Linear Attention](https://arxiv.org/abs/2006.16236)"* (2020) - the true root of the entire
 gated-linear-attention family in this repo (GLA, RetNet, DeltaNet, xLSTM,
 and KDA all build on top of this exact idea).
 
@@ -68,7 +68,7 @@ exactly what problem each one is solving.
 
 ## 3. What this notebook simplifies
 
-Not much — this is already close to the simplest version of the mechanism.
+Not much. This is already close to the simplest version of the mechanism.
 The one choice worth noting is the feature map itself: `elu(x)+1` is the
 paper's original choice, but plenty of later work (including some cited by
 the GLA and DeltaNet papers) experiments with other feature maps, including
@@ -86,5 +86,5 @@ show.
 
 ## 5. Reference
 
-Katharopoulos, Vyas, Pappas, Fleuret, *"Transformers are RNNs: Fast
-Autoregressive Transformers with Linear Attention,"* 2020.
+Katharopoulos, Vyas, Pappas, Fleuret, *"[Transformers are RNNs: Fast
+Autoregressive Transformers with Linear Attention](https://arxiv.org/abs/2006.16236),"* 2020.
