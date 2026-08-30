@@ -1,7 +1,7 @@
-# Mamba (S6) — a toy-scale build of a Selective State Space Model
+# Mamba - a toy-scale build of a Selective State Space Model
 
 A minimal, readable implementation of a **Mamba** block, from Gu & Dao's
-*"Mamba: Linear-Time Sequence Modeling with Selective State Spaces"* (2023),
+*"[Mamba: Linear-Time Sequence Modeling with Selective State Spaces](https://arxiv.org/abs/2312.00752)"* (2023),
 built to run and train on a free Colab GPU (or CPU) in a couple of minutes.
 
 This README explains the idea in plain words. `mamba_mini.ipynb` builds it
@@ -11,7 +11,7 @@ cell by cell, trains it on a toy dataset, and verifies it learns.
 
 ## 1. The big picture
 
-Mamba is built on a **State Space Model (SSM)** — an old idea from control
+Mamba is built on a **State Space Model (SSM)** , an old idea from control
 theory repurposed as a sequence layer. There's a hidden state `h` that gets
 updated at every timestep and read out to produce the output:
 
@@ -24,12 +24,12 @@ This looks like an RNN, and it is one. The "S6" / "selective" part is what
 makes it different from a classic SSM: instead of fixed `A`, `B`, `C`
 matrices, Mamba makes `B`, `C`, and a per-token step size `Δ` **functions of
 the current input**. That's what lets the model decide, per token, whether
-to let information into the state, keep it, or ignore it entirely — the SSM
+to let information into the state, keep it, or ignore it entirely; the SSM
 version of "relevance."
 
 A full Mamba block wraps this recurrence with:
 
-- an **input projection** splitting into two branches — one goes through the
+- an **input projection** splitting into two branches, one goes through the
   SSM, the other is a plain multiplicative gate,
 - a **short causal convolution** before the SSM so nearby tokens mix locally
   first,
@@ -39,11 +39,11 @@ A full Mamba block wraps this recurrence with:
 
 At every timestep `t`, three values are computed *from the token itself*:
 
-- **`Δ_t`** — a positive step size (via `softplus`), one per inner channel.
+- **`Δ_t`** - a positive step size (via `softplus`), one per inner channel.
   Think of it as "how much time has passed" for this token: large `Δ_t`
   means the state changes a lot; small means the token barely moves it.
-- **`B_t`** — which parts of the incoming token get written into the state.
-- **`C_t`** — which parts of the state get read out as output.
+- **`B_t`** - which parts of the incoming token get written into the state.
+- **`C_t`** - which parts of the state get read out as output.
 
 These combine with a fixed, learned, always-negative per-channel matrix `A`
 (so the state naturally decays over time) into a **discretized**,
@@ -79,7 +79,7 @@ them fresh, every token.
 
 - Hardware-aware kernel fusion and the parallel scan (see above).
 - Mixed precision / recomputation tricks used to keep memory low during
-  training on long sequences — irrelevant at toy scale.
+  training on long sequences, irrelevant at toy scale.
 
 ## 5. Running it
 
@@ -91,5 +91,5 @@ periodic output.
 
 ## 6. Reference
 
-Gu & Dao, *"Mamba: Linear-Time Sequence Modeling with Selective State
-Spaces,"* 2023.
+Gu & Dao, *"[Mamba: Linear-Time Sequence Modeling with Selective State
+Spaces](https://arxiv.org/abs/2312.00752),"* 2023.
