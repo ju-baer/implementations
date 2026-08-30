@@ -35,6 +35,12 @@ A full Mamba block wraps this recurrence with:
   first,
 - a **SiLU gate** from the second branch, multiplied into the SSM's output.
 
+<p align="center">
+  <img src="mamba.png" alt="Mamba Architecture Diagram" width="900">
+  <br>
+  <em>Mamba Architecture Overview</em>
+</p>
+
 ## 2. What "selective" changes, step by step
 
 At every timestep `t`, three values are computed *from the token itself*:
