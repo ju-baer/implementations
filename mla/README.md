@@ -42,6 +42,12 @@ itself, once the up-projection happens, is completely ordinary multi-head
 attention. **MLA doesn't change what attention computes, it changes what
 gets stored between tokens.**
 
+<p align="center">
+  <img src="mla.png" alt="MLA Architecture Diagram" width="900">
+  <br>
+  <em>Architecture Overview of DeepSeek-V2</em>
+</p>
+
 ## 2. The one wrinkle: positional encoding
 
 Most modern transformers bake **RoPE** (rotary position embeddings)
