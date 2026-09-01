@@ -36,7 +36,7 @@ token actually needed the extra capacity.
 The result: the model's *total* parameter count can grow enormously (more
 experts), while the *compute* per token stays roughly fixed (still only `k`
 experts run per token). More capacity without a proportional increase in
-compute per token — that's the whole trade MoE is making.
+compute per token. That's the whole trade MoE is making.
 
 ## 2. The part that's easy to get wrong: load balancing
 
@@ -74,6 +74,19 @@ machinery for balancing token counts across GPUs), and it's worth seeing at
 least once, since it's the part that actually delivers MoE's efficiency
 promise.
 
+<p align="center">
+  <img src="moe-1.png" alt="MOE architecture" width="900">
+  <br>
+  <em>A Mixture of Experts (MoE) layer embedded within a recurrent language model</em>
+</p>
+
+<p align="center">
+  <img src="moe-2.png" alt="switch transformer" width="900">
+  <br>
+  <em>Illustration of a Switch Transformer encoder block</em>
+</p>
+
+
 ## 4. What this notebook simplifies
 
 Production MoE systems also need a **capacity factor** — a hard cap on how
@@ -102,6 +115,8 @@ model should generate visibly periodic output.
 
 Shazeer et al., *"[Outrageously Large Neural Networks: The Sparsely-Gated
 Mixture-of-Experts Layer](https://arxiv.org/abs/1701.06538),"* 2017; 
+
 Fedus, Zoph, Shazeer, *"[Switch Transformers: Scaling to Trillion Parameter Models with Simple and
 Efficient Sparsity](https://arxiv.org/pdf/2101.03961),"* 2021; 
+
 Jiang et al., *"[Mixtral of Experts](https://arxiv.org/pdf/2401.04088),"* 2024.
