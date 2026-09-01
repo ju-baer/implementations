@@ -3,7 +3,7 @@
 A minimal implementation of a **sparse Mixture-of-Experts feed-forward
 layer** (Mixtral / Switch-Transformer style top-k routing, with real sparse
 dispatch and a load-balancing auxiliary loss), built as a standalone
-component rather than folded into a specific attention variant — so it can
+component rather than folded into a specific attention variant. So it can
 be dropped into, or compared against, any of the other architectures in
 this repo.
 
@@ -11,7 +11,7 @@ This README explains the idea in plain words. `moe_mini.ipynb` builds it,
 trains it on a toy dataset, and verifies it learns.
 
 *(K3's Stable LatentMoE, in `../kda`, is a more elaborate relative of this
-same idea — latent-compressed routed experts, a different activation, and a
+same idea. latent-compressed routed experts, a different activation, and a
 dense-compute simplification rather than the real sparse dispatch built
 here.)*
 
@@ -29,7 +29,7 @@ token actually needed the extra capacity.
 
 1. A small **router** network looks at each token and scores every expert.
 2. Only the **top-k highest-scoring experts** actually process that token
-   (`k` is usually small — 1 or 2 — even with dozens of experts total).
+   (`k` is usually small (1 or 2) even with dozens of experts total).
 3. The expert outputs are combined with a weighted sum, using the router's
    own scores (renormalized over just the selected experts) as weights.
 
@@ -56,14 +56,14 @@ aux_loss = n_experts * sum_e( frac_tokens[e] * mean_router_prob[e] )
 ```
 
 This loss is minimized when both quantities are close to uniform across
-experts (`1/n_experts` each) — so the model is explicitly penalized for
+experts (`1/n_experts` each), so the model is explicitly penalized for
 letting the router concentrate on a few experts, and gets pushed to
 actually spread load out.
 
 ## 3. Real sparse dispatch (not the "compute everyone, zero the rest" shortcut)
 
-A common shortcut — used in the `../kda` notebook's Stable LatentMoE, for
-simplicity — is to run *every* expert on *every* token and multiply the
+A common shortcut, used in the `../kda` notebook's Stable LatentMoE, for
+simplicity, is to run *every* expert on *every* token and multiply the
 unselected ones by zero afterward. Much simpler to write, but the "sparse"
 layer still does dense compute under the hood.
 
@@ -95,12 +95,13 @@ layer and adds them (lightly weighted) into the main training loss.
 
 Open `moe_mini.ipynb` in Colab, run all cells top to bottom. You'll see the
 model built, sanity-checked, trained for 300 steps on a repeating
-`"0123456789ABCDEF"` string, then used to generate — a correctly-trained toy
+`"0123456789ABCDEF"` string, then used to generate, a correctly-trained toy
 model should generate visibly periodic output.
 
 ## 7. References
 
-Shazeer et al., *"Outrageously Large Neural Networks: The Sparsely-Gated
-Mixture-of-Experts Layer,"* 2017; Fedus, Zoph, Shazeer, *"Switch
-Transformers: Scaling to Trillion Parameter Models with Simple and
-Efficient Sparsity,"* 2021; Jiang et al., *"Mixtral of Experts,"* 2024.
+Shazeer et al., *"[Outrageously Large Neural Networks: The Sparsely-Gated
+Mixture-of-Experts Layer](https://arxiv.org/abs/1701.06538),"* 2017; 
+Fedus, Zoph, Shazeer, *"[Switch Transformers: Scaling to Trillion Parameter Models with Simple and
+Efficient Sparsity](https://arxiv.org/pdf/2101.03961),"* 2021; 
+Jiang et al., *"[Mixtral of Experts](https://arxiv.org/pdf/2401.04088),"* 2024.
