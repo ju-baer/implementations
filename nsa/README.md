@@ -1,8 +1,8 @@
 # Native Sparse Attention (NSA) - a toy-scale build
 
 A minimal implementation of **Native Sparse Attention**, from DeepSeek-AI,
-*"Native Sparse Attention: Hardware-Aligned and Natively Trainable Sparse
-Attention"* (2025) — a way to make attention cheaper by making it
+*"[Native Sparse Attention: Hardware-Aligned and Natively Trainable Sparse
+Attention](https://arxiv.org/abs/2502.11089)"* (2025), a way to make attention cheaper by making it
 *trainably sparse*, rather than dense-then-pruned.
 
 This README explains the idea in plain words. `nsa_mini.ipynb` builds it,
@@ -13,7 +13,7 @@ trains it on a toy dataset, and verifies it learns.
 ## 1. The idea
 
 Regular causal attention makes every token attend to *every* earlier
-token — that's what makes it expensive at long context. Prior work often
+token. That's what makes it expensive at long context. Prior work often
 sparsifies attention *after* training (only look at a subset of tokens at
 inference time), but that tends to hurt quality, because the model was
 never trained to work with a sparse pattern in the first place.
@@ -40,7 +40,7 @@ summaries. Cheap, because there are much fewer blocks than tokens, and it
 gives every query at least a coarse view of the whole sequence.
 
 **Selected branch:** reuse the *attention scores* the compressed branch just
-computed as an importance signal — "which blocks did this query find most
+computed as an importance signal, "which blocks did this query find most
 relevant?" Pick the top-`n` blocks per query, then run **full-resolution**
 attention against every individual token inside just those blocks. This is
 where NSA gets precise, without paying for full-resolution attention against
@@ -62,7 +62,7 @@ kernel that exploits the sparsity pattern directly — skipping the
 un-selected blocks entirely, rather than computing and discarding them.
 This notebook computes the **compressed** and **sliding window** branches
 densely (over the full block grid / full window), and only genuinely
-narrows compute in the **selected** branch, via `gather` — enough to
+narrows compute in the **selected** branch, via `gather`, enough to
 demonstrate the actual sparsity pattern and get the causal masking exactly
 right at toy scale. A real implementation skips far more compute than this
 one does.
@@ -71,10 +71,10 @@ one does.
 
 Open `nsa_mini.ipynb` in Colab, run all cells top to bottom. You'll see the
 model built, sanity-checked, trained for 300 steps on a repeating
-`"0123456789ABCDEF"` string, then used to generate — a correctly-trained toy
+`"0123456789ABCDEF"` string, then used to generate, a correctly-trained toy
 model should generate visibly periodic output.
 
 ## 5. Reference
 
-DeepSeek-AI, *"Native Sparse Attention: Hardware-Aligned and Natively
-Trainable Sparse Attention,"* 2025.
+DeepSeek-AI, *"[Native Sparse Attention: Hardware-Aligned and Natively
+Trainable Sparse Attention](https://arxiv.org/abs/2502.11089),"* 2025.
