@@ -53,6 +53,11 @@ from the current token, so the model controls its own learning rate and
 forgetting rate per token.
 
 
+<p align="center">
+  <img src="mal.png" alt="Memory as a Layer (MAL) Architecture." width="900">
+  <br>
+  <em>Memory as a Layer (MAL) Architecture</em>
+</p>
 
 ## 2. Why this needs a second derivative
 
