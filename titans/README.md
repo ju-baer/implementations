@@ -103,7 +103,7 @@ per attention head.
 
 Open `titans_mini.ipynb` in Colab, run all cells top to bottom. Because
 every training step here involves a gradient-of-a-gradient, it's noticeably
-slower per step than the other notebooks in this repo — the notebook uses a
+slower per step than the other notebooks in this repo. The notebook uses a
 shorter sequence length and a single layer to keep it fast even on CPU.
 You'll see the model built, sanity-checked, trained on a repeating
 `"0123456789ABCDEF"` string, then used to generate.
