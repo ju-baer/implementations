@@ -31,6 +31,13 @@ fully parallelizable one:
 - **A running-maximum stabilizer** in log-space, so the exponential gates
   don't overflow over long sequences.
 
+
+<p align="center">
+  <img src="xlstm.png" alt="The extended LSTM (xLSTM) family" width="900">
+  <br>
+  <em>The extended LSTM (xLSTM) family</em>
+</p>
+
 ## 2. The update rule, step by step
 
 At every timestep `t`:
